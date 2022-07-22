@@ -15,7 +15,7 @@ var apiKey = "24420c1aa9e66418eaa645b4e80d7c35";
 
 // get weather for city name
 var getCurrentWeather = function(cityName) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey + "&units=imperial";
 
     // make request to the url
     fetch(apiUrl).then(function(response) {
@@ -34,7 +34,7 @@ var displayWeather = function(data, cityName) {
 };
 
 var displayForecast = function (cityName) {
-    var forecastURL = "https://api.openweathermap.org/data/2.5/onecall?q=" + cityName + "&exclude=minutely,houry,alerts&appid=" + apiKey;
+    var forecastURL = "https://api.openweathermap.org/data/2.5/onecall?q=" + cityName + "&exclude=minutely,houry,alerts&appid=" + apiKey + "&units=imperial";
 
     fetch(forecastURL)
     .then(response => response.json())
@@ -43,9 +43,12 @@ var displayForecast = function (cityName) {
 
 // Store last searched city name.
 var storeCity = function(saveName) {
-    cityStoredList.push(saveName);
-    localStorage.setItem("cityList", JSON.stringify(cityStoredList));
     cityStoredList = JSON.parse(localStorage.getItem("cityList"));
+    if (cityStoredList.indexOf(saveName) == -1) {
+        cityStoredList.push(saveName);
+        createBtn(saveName);
+    }
+    localStorage.setItem("cityList", JSON.stringify(cityStoredList));
     console.log(cityStoredList);
 };
 
